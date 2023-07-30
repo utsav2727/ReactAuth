@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { PrimaryButton, Stack, TextField, initializeIcons } from '@fluentui/react'
+import useToken from '../CustomHooks/useToken';
 
 initializeIcons();
-const Login = ({ setToken }) => {
+const Login = (props) => {
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
+
+    const { token, setToken } = useToken();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -13,8 +17,8 @@ const Login = ({ setToken }) => {
             userName,
             password
         });
-        console.log(token)
-        setToken(token)
+        console.log(token);
+        props?.setToken(token);
     }
 
     const loginUser = async (credential) => {
