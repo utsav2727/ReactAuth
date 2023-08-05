@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import { redirect } from 'react-router-dom';
-import { useState } from 'react';
-import Login from './Login';
-import useToken from '../CustomHooks/useToken';
-
+import { getToken } from '../CustomHooks/useToken';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-    // const [token, setToken] = useState();
-    const { token, setToken } = useToken();
 
-    if (!token) {
-        { return <Login setToken={setToken} /> }
-    }
+    const token = getToken();
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/')
+        }
+    }, [])
+
+
 
     return (
         <div>
-            <Navbar activePage="home" />
+            <Navbar token={token} activePage="home" />
             <div>
                 Home
             </div>

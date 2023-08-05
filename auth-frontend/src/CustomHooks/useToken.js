@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 
 const useToken = () => {
@@ -21,6 +20,18 @@ const useToken = () => {
         token
     }
 
+};
+
+export const getToken = () => {
+    const tokenString = sessionStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
+    return userToken?.token
+}
+
+
+export const saveToken = (credential) => {
+    const strCredential = JSON.stringify(credential);
+    sessionStorage.setItem('token', strCredential);
 }
 
 export default useToken

@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { PrimaryButton, Stack, TextField, initializeIcons } from '@fluentui/react'
-import useToken from '../CustomHooks/useToken';
+import { getToken, saveToken } from '../CustomHooks/useToken';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../Context/UserContext';
 
 initializeIcons();
-const Login = (props) => {
+const Login = () => {
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
 
-    const { token, setToken } = useToken();
+    const context = useContext(UserContext);
 
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -17,8 +20,13 @@ const Login = (props) => {
             userName,
             password
         });
-        console.log(token);
-        props?.setToken(token);
+        const isToken = getToken();
+        if (isToken) {
+            sessionStorage.removeItem('token');
+        }
+        saveToken({ ...token, username: userName, isLoggedIn: true });
+        context.setUser({ ...token, username: userName, isLoggedIn: true })
+        navigate('/home')
     }
 
     const loginUser = async (credential) => {
